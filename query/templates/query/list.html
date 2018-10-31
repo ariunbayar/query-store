@@ -5,6 +5,7 @@
 <table>
     <thead>
         <tr>
+            <th>#</th>
             <th>Query</th>
             <th>Duration</th>
             <th>Columns</th>
@@ -15,6 +16,7 @@
     <tbody>
         {% for query in queries %}
         <tr>
+            <td>{{ forloop.revcounter }}</td>
             <td><a href="{% url "query-detail" query.id %}">{{ query.query }}</a></td>
             <td>{{ query.duration_ms }}ms</td>
             <td>{{ query.num_columns }}</td>

@@ -19,11 +19,43 @@ def list(request):
 def detail(request, id):
     query = get_object_or_404(Query, id=id)
 
+    all_rows = pickle.loads(query.rows_pickle)
+    all_columns = pickle.loads(query.columns_pickle)
+    rows = all_rows
+    form = {}
+
+    if request.method == 'POST':
+
+        filters = []
+        for i in range(1, 5):
+            field = request.POST.get('field%s' % i)
+            value = request.POST.get('value%s' % i)
+            form['field%s' % i] = field
+            form['value%s' % i] = value
+            if field and value:
+                filters.append((field, value))
+
+        # build column index
+        column_index = dict([(col['name'], i) for i, col in enumerate(all_columns)])
+
+        # filter
+        rows = []
+        for row in all_rows:
+            is_matching = all([v in row[column_index[f]] for f, v in filters]) if filters else True
+            # for i in range(1, 5):
+                # field = request.POST.get('field%s' % i)
+                # value = request.POST.get('value%s' % i)
+                # if field and value:
+                    # is_matching = is_matching and value in row[column_index[field]]
+            if is_matching:
+                rows.append(row)
+
     context = {
+            'form': form,
             'sql': query.query,
             'date': query.updated_at,
-            'columns': pickle.loads(query.columns_pickle),
-            'rows': pickle.loads(query.rows_pickle),
+            'columns': all_columns,
+            'rows': rows,
             }
 
     """
@@ -136,6 +168,7 @@ def run_query(request):
         q.num_rows = len(rows)
         q.columns_pickle = pickle.dumps(columns)
         q.rows_pickle = pickle.dumps(rows)
+        q.duration_ms = (time.time() - time_started) * 1000
         q.save()
 
         context['query'] = q

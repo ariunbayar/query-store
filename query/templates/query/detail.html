@@ -2,6 +2,39 @@
 
 {% block "content" %}
 
+<form method="post">{% csrf_token %}
+    <table>
+        <thead>
+            <tr>
+                <th>Column</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" name="field1" value="{{ form.field1 }}"/></td>
+                <td><input type="text" name="value1" value="{{ form.value1 }}"/></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="field2" value="{{ form.field2 }}"/></td>
+                <td><input type="text" name="value2" value="{{ form.value2 }}"/></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="field3" value="{{ form.field3 }}"/></td>
+                <td><input type="text" name="value3" value="{{ form.value3 }}"/></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="field4" value="{{ form.field4 }}"/></td>
+                <td><input type="text" name="value4" value="{{ form.value4 }}"/></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Filter"/></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
 <table>
     <tbody>
         <tr>
@@ -20,6 +53,7 @@
     <table>
         <thead>
             <tr>
+                <th>#</th>
                 {% for col in columns %}
                 <th>{{ col.name }}<br>({{ col.type }})</th>
                 {% endfor %}
@@ -28,6 +62,7 @@
         <tbody>
             {% for row in rows %}
             <tr>
+                <td>{{ forloop.counter }}</td>
                 {% for v in row %}
                 <td>{{ v }}</td>
                 {% endfor %}
