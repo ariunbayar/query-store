@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block "content" %}
+
+<table>
+    <tbody>
+        <tr>
+            <td>Query</td>
+            <td>{{ sql }}</td>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td>{{ date | date:'Y-m-d H:i'}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<div style="overflow: auto;">
+
+    <table>
+        <thead>
+            <tr>
+                {% for col in columns %}
+                <th>{{ col.name }}<br>({{ col.type }})</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                {% for v in row %}
+                <td>{{ v }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

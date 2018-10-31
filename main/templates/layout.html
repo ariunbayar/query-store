@@ -1,0 +1,23 @@
+<!doctype html>
+{% load static %}
+<html lang="mn">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static "fira_sans_extra_condensed.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "fira_mono.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "main.css" %}">
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="menu">
+            <a href="{% url 'query-list' %}">Нүүр</a>
+            <a href="{% url 'query-run' %}">Run query</a>
+        </div>
+        <div class="main">
+            {% block "content" %}{% endblock %}
+        </div>
+    </div>
+
+    {% block "extra_js" %}{% endblock %}
+</body>
+</html>

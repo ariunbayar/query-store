@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block "content" %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Query</th>
+            <th>Duration</th>
+            <th>Columns</th>
+            <th>Rows</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for query in queries %}
+        <tr>
+            <td><a href="{% url "query-detail" query.id %}">{{ query.query }}</a></td>
+            <td>{{ query.duration_ms }}ms</td>
+            <td>{{ query.num_columns }}</td>
+            <td>{{ query.num_rows }}</td>
+            <td>{{ query.updated_at | date:'Y-m-d H:i'}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

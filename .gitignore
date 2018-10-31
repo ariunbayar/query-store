@@ -1,0 +1,7 @@
+*.swp
+*.swo
+*.pyc
+activate
+__pycache__
+main/local_settings.py
+db.sqlite3
