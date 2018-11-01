@@ -188,6 +188,8 @@ def reference(request):
                 refs = refs.filter(table_name__icontains=form.cleaned_data['table_name'])
             if form.cleaned_data['column_name']:
                 refs = refs.filter(column_name__icontains=form.cleaned_data['column_name'])
+            if form.cleaned_data['is_listed'] == True:
+                refs = refs.filter(is_listed=form.cleaned_data['is_listed'])
 
     else:
         form = ReferenceFilterForm()

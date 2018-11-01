@@ -24,6 +24,8 @@ class Ref(models.Model):
     column_description = models.CharField(max_length=250)
     column_description2 = models.CharField(max_length=250)
 
+    is_listed = models.BooleanField()
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
