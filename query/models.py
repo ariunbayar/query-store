@@ -14,6 +14,20 @@ class Query(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class Ref(models.Model):
+
+    table_name = models.CharField(max_length=250)
+    table_description = models.CharField(max_length=250)
+    table_description2 = models.CharField(max_length=250)
+
+    column_name = models.CharField(max_length=250)
+    column_description = models.CharField(max_length=250)
+    column_description2 = models.CharField(max_length=250)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 class P(models.Model):
     psp_num = models.CharField(max_length=250, null=True)
     abb_nam = models.CharField(max_length=250, null=True)

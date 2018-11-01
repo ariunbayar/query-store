@@ -4,7 +4,8 @@ import time
 
 from django.shortcuts import render, get_object_or_404
 from django.conf import settings
-from .models import Query
+from .models import Query, Ref
+from .forms import ReferenceFilterForm
 
 
 def list(request):
@@ -175,3 +176,24 @@ def run_query(request):
 
 
     return render(request, 'query/run_query.html', context)
+
+
+def reference(request):
+    refs = Ref.objects.all()
+
+    if request.method == 'POST':
+        form = ReferenceFilterForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data['table_name']:
+                refs = refs.filter(table_name__icontains=form.cleaned_data['table_name'])
+            if form.cleaned_data['column_name']:
+                refs = refs.filter(column_name__icontains=form.cleaned_data['column_name'])
+
+    else:
+        form = ReferenceFilterForm()
+
+    context = {
+            'form': form,
+            'refs': refs,
+            }
+    return render(request, 'query/reference.html', context)
