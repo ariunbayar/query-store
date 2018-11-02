@@ -25,16 +25,16 @@ def detail(request, id):
     rows = all_rows
     form = {}
 
-    if request.method == 'POST':
+    filters = []
+    for i in range(1, 5):
+        field = request.GET.get('field%s' % i, '')
+        value = request.GET.get('value%s' % i, '')
+        form['field%s' % i] = field
+        form['value%s' % i] = value
+        if field and value:
+            filters.append((field, value))
 
-        filters = []
-        for i in range(1, 5):
-            field = request.POST.get('field%s' % i)
-            value = request.POST.get('value%s' % i)
-            form['field%s' % i] = field
-            form['value%s' % i] = value
-            if field and value:
-                filters.append((field, value))
+    if filters:
 
         # build column index
         column_index = dict([(col['name'], i) for i, col in enumerate(all_columns)])
@@ -43,11 +43,6 @@ def detail(request, id):
         rows = []
         for row in all_rows:
             is_matching = all([v in row[column_index[f]] for f, v in filters]) if filters else True
-            # for i in range(1, 5):
-                # field = request.POST.get('field%s' % i)
-                # value = request.POST.get('value%s' % i)
-                # if field and value:
-                    # is_matching = is_matching and value in row[column_index[field]]
             if is_matching:
                 rows.append(row)
 
