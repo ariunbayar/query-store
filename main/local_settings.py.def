@@ -3,3 +3,11 @@ DB_PORT = 1521
 DB_SERVER_NAME = ""
 DB_USERNAME = ""
 DB_PASSWORD = ""
+
+
+DB_MYSQL = {
+    'DATABASE': '',
+    'USER'    : '',
+    'PASSWORD': '',
+    'HOST'    : '',
+}
