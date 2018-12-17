@@ -18,6 +18,7 @@ from .local_settings import (
         DB_USERNAME,
         DB_PASSWORD,
         )
+from .local_settings import DB_MYSQL
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -84,8 +85,21 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE'   : 'django.db.backends.mysql',
+        'NAME'     : DB_MYSQL['DATABASE'],
+        'USER'     : DB_MYSQL['USER'],
+        'PASSWORD' : DB_MYSQL['PASSWORD'],
+        'HOST'     : DB_MYSQL['HOST'],
+        'PORT'     : 3306,
+        'OPTIONS' : {
+            # 'init_command' : "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
+        'TEST': {
+            'NAME': ':memory',
+            'ENGINE': 'django.db.backends.sqlite3',
+            'CHARSET': 'UTF8',
+        },
+        'ATOMIC_REQUESTS': True,
     }
 }
 
