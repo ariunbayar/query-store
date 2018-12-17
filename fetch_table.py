@@ -208,17 +208,22 @@ def fetch_rows(table, columns, next_rowid, num_rows):
     query = """
             SELECT
                 {fields}
-            FROM
-                {table}
+            FROM (
+                    SELECT
+                        {fields}
+                    FROM
+                        {table}
+                    {filter_condition}
+                    ORDER BY
+                        ROWID ASC
+                )
             WHERE
-                ROWNUM <= :prownummax {filter_condition}
-            ORDER BY
-                ROWID ASC
+                ROWNUM <= :prownummax
         """
     query = query.format(
             fields=', '.join(['ROWID', 'ORA_ROWSCN'] + columns),
             table=table,
-            filter_condition="AND ROWID > :prowid" if next_rowid else "",
+            filter_condition="WHERE ROWID > :prowid" if next_rowid else "",
         )
     params = {'prownummax': num_rows}
     if next_rowid:

@@ -21,6 +21,7 @@ def detail(request, id):
 
     all_rows = pickle.loads(query.rows_pickle)
     all_columns = pickle.loads(query.columns_pickle)
+
     rows = all_rows
     form = {}
 
@@ -40,10 +41,24 @@ def detail(request, id):
 
         # filter
         rows = []
+        last_rowid = 0
+        last_ora_rowscn = 0
         for row in all_rows:
+            if row[1] == last_ora_rowscn and row[0] != last_rowid:
+                print('=' * 79)
+                print('%s - %s' % (last_ora_rowscn, last_rowid))
+                print('%s - %s' % (row[1], row[0]))
+                last_rowid, last_ora_rowscn = row[:2]
             is_matching = all([v in row[column_index[f]] for f, v in filters]) if filters else True
             if is_matching:
                 rows.append(row)
+
+    row_start = int(request.GET.get('row_start', 0))
+    row_end = int(request.GET.get('row_end', len(rows) - 1))
+    rows = [row for i, row in enumerate(rows) if i >= row_start and i <= row_end]
+
+    form['row_start'] = row_start
+    form['row_end'] = row_end
 
     context = {
             'form': form,

@@ -1,6 +1,9 @@
-from django.conf import settings
+import hashlib
 import cx_Oracle
 import os
+
+from django.conf import settings
+from django.core.cache import caches
 
 
 def _execute_query(query, **kwargs):
@@ -43,6 +46,8 @@ def _execute_query(query, **kwargs):
             return 'binary'
         if type == cx_Oracle.BLOB:
             return 'blob'
+        if type == cx_Oracle.ROWID:
+            return 'rowid'
 
         return repr(type)
 
@@ -70,4 +75,33 @@ def _execute_query(query, **kwargs):
 
     connection.close()
 
+    return columns, rows
+
+
+def hashit(data):
+
+    if type(data) == str:
+        data = data.encode()
+
+    if type(data) != bytes:
+        raise Exception("Cannot hash %r" % data)
+
+    return hashlib.md5(data).hexdigest()
+
+
+def execute_query(query, cache_query=True, **kwargs):
+
+    if cache_query:
+        cache = caches['dump']
+
+        key = hashit('%s\n%r' % (query, kwargs))
+        values = cache.get(key)
+        if not values:
+            print('\n\nExecuting: %s\nkwargs:\n%r\n' % (query, kwargs))
+            values = _execute_query(query, **kwargs)
+            cache.set(key, values, 300)
+    else:
+        print('\n\nExecuting: %s\nkwargs:\n%r\n' % (query, kwargs))
+        values = _execute_query(query, **kwargs)
+    columns, rows = values
     return columns, rows

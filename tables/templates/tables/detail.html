@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% load humanize %}
+
+{% block "content" %}
+
+<table>
+    <tbody>
+        <tr>
+            <th align="right">Owner</th>
+            <td>{{ table.owner }}</td>
+        </tr>
+        <tr>
+            <th align="right">Name</th>
+            <td>{{ table.name }}</td>
+        </tr>
+        <tr>
+            <th align="right">Row count</th>
+            <td>{{ table.num_rows|intcomma }}</td>
+        </tr>
+        <tr>
+            <th align="right">Created</th>
+            <td>{{ table.created_at }}</td>
+        </tr>
+        <tr>
+            <th align="right">Updated</th>
+            <td>{{ table.updated_at }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Columns</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Length</th>
+            <th>Constraints</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for col in columns %}
+        <tr>
+            <td>{{ col.name }}</td>
+            <td>{{ col.data_type }}</td>
+            <td>{{ col.data_len }}</td>
+            <td>
+                {% for cons in col.constraints %}
+                    [{{ cons.type }}] {{ cons.name }} 
+                    {% if cons.condition %} - {{ cons.condition }} {% endif %}
+                    {% if forloop.counter %} <br/> {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<a href="{% url "table-list" %}">&laquo; Back to tables</a>
+
+
+{% endblock %}

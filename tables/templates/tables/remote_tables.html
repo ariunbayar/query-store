@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block "content" %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Owner</th>
+            <th>Name</th>
+            <th>Imported?</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for table in tables %}
+        <tr>
+            <td>{{ table.owner }}</td>
+            <td>{{ table.name }}</td>
+            <td>
+                {% if table.is_imported %}
+                imported
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<a href="{% url "remote-tables-import" %}" onclick="return confirm('Sure?')">Import all</a>
+
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block "content" %}
+
+<form method="get" novalidate>
+    <table>
+        <tbody>
+            {{ form.as_table }}
+            <tr>
+                <th></th>
+                <td><input type="submit"/></td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+Not displaying {{ num_hidden }} tables.
+
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Owner</th>
+            <th>Name</th>
+            <th>Row count</th>
+            <th>Created</th>
+            <th>Updated</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for table in tables %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ table.owner }}</td>
+            <td>{{ table.name }}</td>
+            <td>{{ table.num_rows }}</td>
+            <td>{{ table.created_at }}</td>
+            <td>{{ table.updated_at }}</td>
+            <td><a href="{% url "table-detail" table.id %}">details</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<a href="{% url "remote-tables" %}">Show remote tables</a>
+
+<h2>Action</h2>
+
+<ul>
+    <li><a href="{% url "remote-tables-update-row-count" %}" onclick="return confirm('Sure?')">Update row count</a></li>
+</ul>
+
+
+{% endblock %}

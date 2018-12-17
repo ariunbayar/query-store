@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'tables.apps.TablesConfig',
     'query.apps.QueryConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'livereload',
 ]
 
@@ -139,3 +141,5 @@ CACHES = {
             'TIMEOUT': None,
         }
     }
+
+DATETIME_FORMAT = 'Y-m-d H:i'
