@@ -17,6 +17,6 @@ urlpatterns = [
     path('tables/remote/update-row-count/', tables.views.update_num_rows, name='remote-tables-update-row-count'),
     path('tables/', tables.views.list, name='table-list'),
     path('tables/<int:rtable_id>', tables.views.detail, name='table-detail'),
-    # path('tables/<int:id>/', tables.views.detail, name='table-detail'),
+    path('tables/<int:rtable_id>/mark-as-declared/', tables.views.mark_as_declared, name='table-mark-as-declared'),
 
 ]

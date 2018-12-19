@@ -40,7 +40,7 @@ def remote_tables_import(request):
                 name=table.get('name'),
                 owner=table.get('owner'),
                 defaults={
-                    'num_rows': table.num_rows,
+                    'num_rows': table.get('num_rows') or 0,
                     }
             )
 

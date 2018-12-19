@@ -23,6 +23,7 @@ Not displaying {{ num_hidden }} tables.
             <th>Owner</th>
             <th>Name</th>
             <th>Row count</th>
+            <th>Model name</th>
             <th>Created</th>
             <th>Updated</th>
             <th></th>
@@ -35,6 +36,11 @@ Not displaying {{ num_hidden }} tables.
             <td>{{ table.owner }}</td>
             <td>{{ table.name }}</td>
             <td>{{ table.num_rows }}</td>
+            <td>
+                {% if table.is_declared %}
+                {{ table.declared_name }}
+                {% endif %}
+            </td>
             <td>{{ table.created_at }}</td>
             <td>{{ table.updated_at }}</td>
             <td><a href="{% url "table-detail" table.id %}">details</a></td>
