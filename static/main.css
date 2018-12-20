@@ -29,6 +29,10 @@ table td, table th{
     padding: 0rem 1rem;
 }
 
+table tr:hover{
+    background-color: rgba(0,0,0,.05);
+}
+
 .form-error {
     color: red;
 }

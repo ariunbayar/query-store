@@ -72,12 +72,15 @@ def _get_detailed_columns(rtable):
 
 def _get_model_declaration(rtable, columns):
 
-    def _get_field_declaration(data_type, data_length, nullable):
+    def _get_field_declaration(data_type, data_length, nullable, constraints):
 
         props = []
 
         if nullable:
             props.append('null=True')
+
+        if any([v['type'] == 'P' for v in constraints]):
+            props.append('db_index=True')
 
         if data_type in ['NUMBER', 'LONG']:
             field_type = 'IntegerField'
@@ -97,8 +100,8 @@ def _get_model_declaration(rtable, columns):
     declaration = "class %s(models.Model):" % rtable.get_name_for_model()
     declaration += "\n\n    class Meta:\n"
     declaration += "        db_table = 'ISM_%s'\n\n" % rtable.name
-    declaration += "    change_id = models.IntegerField()\n"
-    declaration += "    row_id = models.CharField(max_length=50)\n"
+    declaration += "    change_id = models.IntegerField(db_index=True)\n"
+    declaration += "    row_id = models.CharField(max_length=50, db_index=True)\n"
 
     for col in columns:
         field_name = "f_" + col['name'].lower()
@@ -106,6 +109,7 @@ def _get_model_declaration(rtable, columns):
                 col['data_type'],
                 col['data_len'],
                 col['nullable'],
+                col['constraints'],
             )
         declaration += "\n    " + field_name + " = " + field_declaration
 
