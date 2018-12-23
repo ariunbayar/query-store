@@ -84,13 +84,15 @@ def _get_model_declaration(rtable, columns):
 
         if data_type in ['NUMBER', 'LONG']:
             field_type = 'IntegerField'
-        elif data_type in ['CHAR', 'VARCHAR2']:
+        elif data_type in ['CHAR', 'VARCHAR2', 'NVARCHAR2']:
             props.append('max_length=%s' % data_length)
             field_type = 'CharField'
         elif data_type in ['DATE']:
             field_type = 'DateTimeField'
         elif data_type in ['FLOAT']:
             field_type = 'FloatField'
+        elif data_type in ['BLOB', 'CLOB']:
+            field_type = 'BinaryField'
         else:
             field_type = '???'
 
@@ -100,7 +102,7 @@ def _get_model_declaration(rtable, columns):
     declaration = "class %s(models.Model):" % rtable.get_name_for_model()
     declaration += "\n\n    class Meta:\n"
     declaration += "        db_table = 'ISM_%s'\n\n" % rtable.name
-    declaration += "    change_id = models.IntegerField(db_index=True)\n"
+    declaration += "    change_id = models.BigIntegerField(db_index=True)\n"
     declaration += "    row_id = models.CharField(max_length=50, db_index=True)\n"
 
     for col in columns:

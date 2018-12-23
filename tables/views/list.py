@@ -22,21 +22,3 @@ def list(request):
         }
 
     return render(request, 'tables/list.html', context)
-
-
-def update_num_rows(request):
-
-    tables = _get_remote_tables_sorted()
-
-    for table in tables:
-        try:
-            rtable = RemoteTable.objects.get(
-                    name=table.get('name'),
-                    owner=table.get('owner'),
-                )
-            rtable.num_rows = table.get('num_rows') or 0
-            rtable.save()
-        except RemoteTable.DoesNotExist:
-            pass
-
-    return redirect('table-list')
